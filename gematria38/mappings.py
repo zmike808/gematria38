@@ -9,9 +9,7 @@ ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 def reduce(r):
     if r <= 9:
         return r
-    if r <= 18:
-        return r - 9
-    return r - 18
+    return r - 9 if r <= 18 else r - 18
 
 @dataclass
 class Cipher:
@@ -54,10 +52,7 @@ class Ordinal(Cipher):
 class HasAlternates:
 
     def should_alternate(self, c):
-        if c in self.alternates and getattr(self, c):
-            return True
-        else:
-            return False
+        return bool(c in self.alternates and getattr(self, c))
         
 class HasLetterMap:
     
@@ -67,7 +62,7 @@ class HasLetterMap:
     
     def letter_map(self, numbers):
         z1 = zip(ALPHABET, numbers)
-        result = { k:v for (k,v) in z1}
+        result = dict(z1)
         for c, i in zip(ALPHABET.lower(), numbers):
             result[c] = i
         return result
@@ -124,8 +119,7 @@ class ReverseOrdinal(Ordinal):
     
     def ord(self, c):
         _ = super().ord(c)
-        r = 27 - _
-        return r
+        return 27 - _
 
 
 @dataclass
@@ -173,8 +167,7 @@ class Sumerian(Ordinal):
     
     def ord(self, c):
         _ = super().ord(c)
-        r = 6 * _
-        return r
+        return 6 * _
 
 
 
@@ -278,8 +271,7 @@ class Satanic(Ordinal):
     
     def ord(self, c):
         _ = super().ord(c)
-        r = 35 + _
-        return r
+        return 35 + _
     
     
 @dataclass
